@@ -33,10 +33,10 @@ function successCallback(stream) {
   const FPS = 10;
 
   /* ここから */
-  const width = canvas.width*1.5;
-  const height = canvas.height*4;
-  //const width = canvas.width;
-  //const height = canvas.height;
+  //const width = canvas.width*1.5;
+  //const height = canvas.height*4;
+  const width = canvas.width;
+  const height = canvas.height;
 
   let videoMatNow = new cv.Mat(height, width, cv.CV_8UC4);
 
