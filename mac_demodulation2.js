@@ -35,8 +35,8 @@ function successCallback(stream) {
   /* ここから */
   //const width = canvas.width*1.5;
   //const height = canvas.height*4;
-  const width = canvas.width;
-  const height = canvas.height;
+  const width = video.width;
+  const height = video.height;
 
   let videoMatNow = new cv.Mat(height, width, cv.CV_8UC4);
 
