@@ -35,13 +35,15 @@ function successCallback(stream) {
   /* ここから */
   //const width = canvas.width*1.5;
   //const height = canvas.height*4;
-  const width = video.width;
-  const height = video.height;
+  //const width = video.clientwidth;
+  //const height = video.clientheight;
+  const width = canvas.width;
+  const height = canvas.height;
 
   let videoMatNow = new cv.Mat(height, width, cv.CV_8UC4);
 
-  canvas.width = width;
-  canvas.height = height;
+  //canvas.width = width;
+  //canvas.height = height;
 
 
   //設定するパラメータ//
