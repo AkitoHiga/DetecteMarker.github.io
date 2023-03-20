@@ -50,11 +50,11 @@ function successCallback(stream) {
 
   //設定するパラメータ//
   const pilot_S = [
-    [[255,0,0],[255,0,0],[0,255,0]],
-    [[255,0,0],[255,0,0],[0,0,0]],
-    [[255,0,255],[0,0,0],[0,0,255]],
+    [[72,140,35],[68,162,116],[71,139,46]],
+    [[74,178,80],[0,0,0],[89,187,82]],
+    [[81,147,50],[82,178,42],[75,125,46]],
   ];
-  let color_kyoyou = [5,50,50];
+  let color_kyoyou = [20,20,20];
   let ave_area = 4;
   size_y = 30;
   size_x = 30;
@@ -104,7 +104,8 @@ function successCallback(stream) {
   let loop = 0;
 
 
-  
+  const strtTime = Date.now();
+
   processVideo();
 
   function processVideo() {
@@ -137,15 +138,15 @@ function successCallback(stream) {
       //console.log(pilot_S[0][0][0]+color_kyoyou[0　]);
       //T_num_detectAnker = 3;
 
-      /*
+      
       loop++;
-      if(loop>3){
+      if(loop>30){
         detectedMarker_Flag = 0;
         detect_marker();
       }
-      */
+      
 
-      cariblation_ave(canvas.height/2-size/2,canvas.width/2-size/2);
+      //cariblation_ave(canvas.height/2-size/2,canvas.width/2-size/2);
 
 
       //キャリブレーション
@@ -286,8 +287,8 @@ function successCallback(stream) {
         compare_for_judgeSignal(0,0);
         if(T_num_judgeSignal>2){
           console.log("トートバック")
-          console.log(ave_position[0][0]);
-          //window.location.href = 'https://knart.theshop.jp/items/72658345';
+          //console.log(ave_position[0][0]);
+          window.location.href = 'https://knart.theshop.jp/items/72658345';
           judgedSignal_Flag = 1
         }
         else{
