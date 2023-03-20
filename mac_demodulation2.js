@@ -145,14 +145,14 @@ function successCallback(stream) {
       }
       */
 
-      cariblation_ave(height/2-size/2,width/2-size/2);
+      cariblation_ave(canvas.height/2-size/2,canvas.width/2-size/2);
 
 
       //キャリブレーション
       function cariblation_ave(anky,ankx) {
         let ave_temp = [0,0,0];
-        for(let py=0; y<ave_position.length; y++){        //計算量短縮のため、1つずつ
-          for(let px=0; x<ave_position[0].length; x++){
+        for(let py=0; py<ave_position.length; py++){        //計算量短縮のため、1つずつ
+          for(let px=0; px<ave_position[0].length; px++){
             for(let y=0; y<ave_area; y++){
               for(let x=0; x<ave_area; x++){
                 ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)-parseInt(ave_area/2), ankx+parseInt(size_x/6)*(px*2+1)-parseInt(ave_area/2)));
