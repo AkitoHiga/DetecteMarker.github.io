@@ -33,17 +33,19 @@ function successCallback(stream) {
   const FPS = 10;
 
   /* ここから */
-  //const width = canvas.width*1.5;
-  //const height = canvas.height*4;
-  //const width = video.clientwidth;
-  //const height = video.clientheight;
-  const width = canvas.width;
-  const height = canvas.height;
+  //const width = 390;    //スマホ
+  //const height = 640;   //スマホiPhone12
+  const width = 420;    //スマホ
+  const height = 640;   //スマホiPhone12pro
+  //const width = video.clientWidth;
+  //const height = video.clientHeight;
+  //const width = 640;
+  //const height = 480; 
 
   let videoMatNow = new cv.Mat(height, width, cv.CV_8UC4);
 
-  //canvas.width = width;
-  //canvas.height = height;
+  canvas.width = width;
+  canvas.height = height;
 
 
   //設定するパラメータ//
@@ -52,10 +54,10 @@ function successCallback(stream) {
     [[255,0,0],[255,0,0],[0,0,0]],
     [[255,0,255],[0,0,0],[0,0,255]],
   ];
-  let color_kyoyou = [5,10,5];
-  let ave_area = 10;
-  size_y = 180;
-  size_x = 180;
+  let color_kyoyou = [5,50,50];
+  let ave_area = 4;
+  size_y = 30;
+  size_x = 30;
 
 
   //変数宣言・固定値の準備//
@@ -96,11 +98,13 @@ function successCallback(stream) {
   ];
   let T_num_detectAnker = 0;
   let T_num_judgeMarker = 0;
+  let T_num_judgeSignal = 0;
   let detectedMarker_Flag = 0;
+  let judgedSignal_Flag = 0;
+  let loop = 0;
 
 
-
-
+  
   processVideo();
 
   function processVideo() {
@@ -115,12 +119,14 @@ function successCallback(stream) {
       // videoMatPre.copyTo(videoMatNow);
       // videoMatNow.data.set(ctx.getImageData(0, 0, width, height).data);
       videoMatNow = cv.matFromImageData(ctx.getImageData(0, 0, canvas.width, canvas.height));
-      /*
+      
+      //設定のための矩形//
       let colorRed = new cv.Scalar(255,0,0);
-      let size = 300
+      let size = 30;
       cv.rectangle(videoMatNow, new cv.Point(canvas.width/2-size/2,canvas.height/2-size/2), new cv.Point(canvas.width/2+size/2,canvas.height/2+size/2), colorRed, 1);
       cv.imshow("canvas", videoMatNow);
-      */
+      //
+      
       // videoMatNow.data.set(cv.matFromImageData(imageData));
 
 
@@ -128,26 +134,56 @@ function successCallback(stream) {
 
       //detect_marker();
       
-      //console.log(pilot_S[0][0][0]+color_kyoyou[0]);
+      //console.log(pilot_S[0][0][0]+color_kyoyou[0　]);
       //T_num_detectAnker = 3;
 
-      detectedMarker_Flag = 0;
-      detect_marker();
-      
+      /*
+      loop++;
+      if(loop>3){
+        detectedMarker_Flag = 0;
+        detect_marker();
+      }
+      */
+
+      cariblation_ave(height/2-size/2,width/2-size/2);
+
+
+      //キャリブレーション
+      function cariblation_ave(anky,ankx) {
+        let ave_temp = [0,0,0];
+        for(let py=0; y<ave_position.length; y++){        //計算量短縮のため、1つずつ
+          for(let px=0; x<ave_position[0].length; x++){
+            for(let y=0; y<ave_area; y++){
+              for(let x=0; x<ave_area; x++){
+                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)-parseInt(ave_area/2), ankx+parseInt(size_x/6)*(px*2+1)-parseInt(ave_area/2)));
+              }
+            }
+            ave_position[py][px] = div(ave_temp,ave_area*ave_area);
+            ave_temp = [0,0,0];
+          }
+        }
+        console.log(ave_position);
+      }
 
       //マーカの検出
       function detect_marker() {
-        for(let y=0; y<height/3; y++){          //1/3しているの忘れずに!//
-          for(let x=0; x<width/3; x++){
+        for(let y=height/3; y<height*2/3; y++){          //1/3しているの忘れずに!//
+          for(let x=width/3; x<width*2/3; x++){
             let data = videoMatNow.ucharPtr(y,x);
             compare_for_detectAnker(data);      
-            if(T_num_detectAnker>0){            //マーカ[0,0]の色ならjudge_marker()へ
+            if(T_num_detectAnker>2){            //マーカ[0,0]の色ならjudge_marker()へ
               judge_marker(y,x);
             }
             if(detectedMarker_Flag){             //マーカが見つかったならjudge_signal()へ
               judge_signal(y,x)
+              if(judgedSignal_Flag){
+                break;
+              }
               //マーカ検出終了
             }
+          }
+          if(judgedSignal_Flag){
+            break;
           }
         }
         console.log("マーカーが見つからない");
@@ -221,14 +257,14 @@ function successCallback(stream) {
       function judge_marker(anky,ankx) {
         average(anky,ankx,0,0);           //position[0,0]の検査
         compare_for_judgeMarker(0,0);
-        if(T_num_judgeMarker>0){
+        if(T_num_judgeMarker>2){
           average(anky,ankx,0,1);         //position[0,1]へ
           compare_for_judgeMarker(0,1);   
-          if(T_num_judgeMarker>0){
+          if(T_num_judgeMarker>2){
             average(anky,ankx,1,0);       //position[1,0]へ
             compare_for_judgeMarker(0,1);   
           }
-          if(T_num_judgeMarker>0){
+          if(T_num_judgeMarker>2){
             detectedMarker_Flag = 1;
           }
         }
@@ -248,23 +284,32 @@ function successCallback(stream) {
       function judge_signal(anky,ankx) {
         average(anky,ankx,1,1);
         compare_for_judgeSignal(0,0);
-        if(T_num_judgeSignal>0){
+        if(T_num_judgeSignal>2){
           console.log("トートバック")
+          console.log(ave_position[0][0]);
+          //window.location.href = 'https://knart.theshop.jp/items/72658345';
+          judgedSignal_Flag = 1
         }
         else{
           compare_for_judgeSignal(0,2);
-          if(T_num_judgeSignal>0){
+          if(T_num_judgeSignal>2){
             console.log("コップ")
+            window.location.href = 'https://knart.theshop.jp/items/72327960';
+            judgedSignal_Flag = 1
           }
           else{
             compare_for_judgeSignal(2,2);
-            if(T_num_judgeSignal>0){
+            if(T_num_judgeSignal>2){
               console.log("Tシャツ")
+              window.location.href = 'https://knart.theshop.jp/items/72327753';
+              judgedSignal_Flag = 1
             }
             else{
               compare_for_judgeSignal(2,0);
-              if(T_num_judgeSignal>0){
+              if(T_num_judgeSignal>2){
                 console.log("キャンバス")
+                window.location.href = 'https://sites.google.com/view/kannonishio/artworks';
+                judgedSignal_Flag = 1
               }
               else{
                 console.log("信号に該当しない")
