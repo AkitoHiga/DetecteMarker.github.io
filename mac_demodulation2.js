@@ -330,6 +330,7 @@ function successCallback(stream) {
                 judgedSignal_Flag = 1;
               }
               else{
+                detectedMarker_Flag = 0
                 console.log("信号に該当しない");
               }
             }
