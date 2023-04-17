@@ -68,7 +68,7 @@ function successCallback(stream) {
     [[81, 255, 117], [166, 126, 1], [163, 255, 0]], 
     [[166, 126, 0], [81, 255, 0], [168, 116, 160]],
   ];
-  let color_kyoyou = [25,25,25];
+  let color_kyoyou = [20,20,20];
   let ave_area = 4;
   size_y = 30;
   size_x = 30;
