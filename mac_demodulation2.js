@@ -77,9 +77,9 @@ function successCallback(stream) {
     [[105, 76, 80], [58, 102, 94], [106, 82, 106]],
   ];
 
-  let color_kyoyou = [15,15,15];
-  //let ave_area = 4;
-  let ave_area = 10;
+  let color_kyoyou = [20,20,20];
+  let ave_area = 4;
+  //let ave_area = 10;
   size_y = 30;
   size_x = 30;
 
@@ -271,7 +271,8 @@ function successCallback(stream) {
             for(let y=0; y<ave_area; y++){
               for(let x=0; x<ave_area; x++){
                 //ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)-parseInt(ave_area/2)+y, ankx+parseInt(size_x/6)*(px*2+1)-parseInt(ave_area/2)+x));
-                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/3)*(py)+y, ankx+parseInt(size_x/3)*(px)+x));
+                //ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/3)*(py)+y, ankx+parseInt(size_x/3)*(px)+x));
+                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/3)*(py)+parseInt(ave_area/2), ankx+parseInt(size_x/3)*(px)+parseInt(ave_area/2)));
               }
             }
             ave_position[py][px] = div(ave_temp,ave_area*ave_area);
