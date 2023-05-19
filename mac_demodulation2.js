@@ -63,21 +63,22 @@ function successCallback(stream) {
     [[174, 142, 24], [90, 252, 1], [166, 141, 153]],
   ];
   */
-  /*    04/15.406テスト環境
+  //04/15.406テスト環境
   const pilot_S = [
     [[39, 142, 0], [160, 252, 115], [44, 130, 153]], 
     [[81, 255, 117], [166, 126, 1], [163, 255, 0]], 
     [[166, 126, 0], [81, 255, 0], [168, 116, 160]],
   ];
-  */
+ /*
   //  04/24.ニューラルテスト環境
   const pilot_S = [
     [[80, 75, 75], [108, 101, 106], [79, 81, 103]], 
     [[81, 102, 108], [0, 0, 0], [82, 105, 99]], 
     [[105, 76, 80], [58, 102, 94], [106, 82, 106]],
   ];
+  */
 
-  let color_kyoyou = [20,20,20];
+  let color_kyoyou = [15,15,15];
   let ave_area = 4;
   //let ave_area = 10;
   size_y = 30;
@@ -270,9 +271,9 @@ function successCallback(stream) {
           //for(let px=0; x<ave_position[0].length; x++){
             for(let y=0; y<ave_area; y++){
               for(let x=0; x<ave_area; x++){
-                //ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)-parseInt(ave_area/2)+y, ankx+parseInt(size_x/6)*(px*2+1)-parseInt(ave_area/2)+x));
+                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)-parseInt(ave_area/2)+y, ankx+parseInt(size_x/6)*(px*2+1)-parseInt(ave_area/2)+x));
                 //ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/3)*(py)+y, ankx+parseInt(size_x/3)*(px)+x));
-                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/3)*(py)+parseInt(ave_area/2), ankx+parseInt(size_x/3)*(px)+parseInt(ave_area/2)));
+                //ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/3)*(py)+parseInt(ave_area/2), ankx+parseInt(size_x/3)*(px)+parseInt(ave_area/2))); //verVPIS
               }
             }
             ave_position[py][px] = div(ave_temp,ave_area*ave_area);
