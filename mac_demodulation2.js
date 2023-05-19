@@ -63,13 +63,21 @@ function successCallback(stream) {
     [[174, 142, 24], [90, 252, 1], [166, 141, 153]],
   ];
   */
+  /*
   //04/15.406テスト環境
   const pilot_S = [
     [[39, 142, 0], [160, 252, 115], [44, 130, 153]], 
     [[81, 255, 117], [166, 126, 1], [163, 255, 0]], 
     [[166, 126, 0], [81, 255, 0], [168, 116, 160]],
   ];
- /*
+  */
+  //05/19.407テスト環境
+  const pilot_S = [
+    [[41, 138, 6], [162, 240, 133], [40, 131, 177]], 
+    [[74, 243, 136], [0, 0, 0], [172, 244, 0]], 
+    [[182, 137, 2], [70, 245, 0], [180, 138, 183]],
+  ]
+  /*
   //  04/24.ニューラルテスト環境
   const pilot_S = [
     [[80, 75, 75], [108, 101, 106], [79, 81, 103]], 
@@ -78,7 +86,7 @@ function successCallback(stream) {
   ];
   */
 
-  let color_kyoyou = [15,15,15];
+  let color_kyoyou = [30,15,15];
   let ave_area = 4;
   //let ave_area = 10;
   size_y = 30;
@@ -181,7 +189,7 @@ function successCallback(stream) {
           for(let px=0; px<ave_position[0].length; px++){
             for(let y=0; y<ave_area; y++){
               for(let x=0; x<ave_area; x++){
-                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)+x, ankx+parseInt(size_x/6)*(px*2+1)+y));
+                ave_temp = add(ave_temp,videoMatNow.ucharPtr(anky+parseInt(size_y/6)*(py*2+1)+y, ankx+parseInt(size_x/6)*(px*2+1)+x));
               }
             }
             ave_position[py][px] = div(ave_temp,ave_area*ave_area);
